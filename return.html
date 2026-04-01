@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/file/d/1KqP3p31Lx5aNYR7BZDjJizn1f999yQit/view?usp=drive_link">
+    <script src="https://js.stripe.com/v1/"></script>
+    <style>body{font-family:Arial,sans-serif;max-width:600px;margin:50px auto;padding:20px;}</style>
+</head>
+<body>
+<h1>✅ Payment Successful!</h1>
+<p>Thank you for your purchase. Your order is being processed.</p>
+<div id="details"></div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    if (sessionId) {
+        // Optional: Fetch session details (requires publishable key)
+        const stripe = Stripe('pk_test_YOUR_PUBLISHABLE_KEY'); // Replace with your key
+        stripe.retrieveCheckoutSession(sessionId).then(function(result) {
+            document.getElementById('details').innerHTML = `
+                    <p>Amount: ${result.amount_total / 100} ${result.currency.toUpperCase()}</p>
+                    <p>Status: ${result.payment_status}</p>
+                `;
+        });
+    }
+</script>
+</body>
+</html>
